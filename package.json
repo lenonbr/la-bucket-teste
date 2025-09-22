@@ -1,19 +1,22 @@
 {
-  "name": "la-bucket",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@prisma/client": "^6.16.2",
-    "fastify": "^5.6.1"
-  },
-  "devDependencies": {
-    "prisma": "^6.16.2"
-  }
+    "name": "la-bucket",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "tsx watch src/http/server.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@prisma/client": "^6.16.2",
+        "fastify": "^5.6.1"
+    },
+    "devDependencies": {
+        "@types/node": "^24.5.2",
+        "prisma": "^6.16.2",
+        "tsx": "^4.20.5",
+        "typescript": "^5.9.2"
+    }
 }

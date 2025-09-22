@@ -1,9 +1,10 @@
 #PASTAS
 
 /node_modules
+/src/generated/prisma
 
 
 #ARQUIVOS
+
 .env
 package-lock.json
-/src/generated/prisma
