@@ -2,19 +2,41 @@ import fastify from "fastify";
 import {PutObjectCommand} from "@aws-sdk/client-s3";
 import {r2} from "../lib/cloudflare";
 import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
+import z4 from "zod/v4";
+import {randomUUID} from "crypto";
+import {PrismaClient} from "../generated/prisma";
 
 const app = fastify();
 
-app.post("/uploads", async () => {
+const prisma = new PrismaClient();
+
+app.post("/uploads", async (req) => {
+    const uploadBodySchema = z4.object({
+        name: z4.string().min(1),
+        contentType: z4.string().regex(/\w+\/[-+\w]+/),
+    });
+
+    const {name, contentType} = uploadBodySchema.parse(req.body);
+
+    const fileKey = randomUUID().concat("-").concat(name);
+
     const signedUrl = await getSignedUrl(
         r2,
         new PutObjectCommand({
             Bucket: "lenon-bucket-teste",
-            Key: "file.mp4",
-            ContentType: "video/mp4",
+            Key: fileKey,
+            ContentType: contentType,
         }),
         {expiresIn: 600}
     );
+
+    await prisma.file.create({
+        data: {
+            name,
+            contentType,
+            key: fileKey,
+        },
+    });
 
     return signedUrl;
 });
