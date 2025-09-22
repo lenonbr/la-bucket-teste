@@ -1,0 +1,9 @@
+#PASTAS
+
+/node_modules
+
+
+#ARQUIVOS
+.env
+package-lock.json
+/src/generated/prisma
