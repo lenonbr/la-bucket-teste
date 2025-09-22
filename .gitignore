@@ -1,10 +1,6 @@
-#PASTAS
-
+# PASTAS
 /node_modules
-/src/generated/prisma
 
-
-#ARQUIVOS
-
+# ARQUIVOS
 .env
 package-lock.json
