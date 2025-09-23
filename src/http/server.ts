@@ -6,40 +6,45 @@ import z4 from "zod/v4";
 import {randomUUID} from "crypto";
 import {PrismaClient} from "../generated/prisma";
 
+//routes
+import route_bucket from "../mvc/routes/route_bucket";
+
 const app = fastify();
 
 const prisma = new PrismaClient();
 
-app.post("/uploads", async (req) => {
-    const uploadBodySchema = z4.object({
-        name: z4.string().min(1),
-        contentType: z4.string().regex(/\w+\/[-+\w]+/),
-    });
+// app.post("/uploads", async (req) => {
+//     const uploadBodySchema = z4.object({
+//         name: z4.string().min(1),
+//         contentType: z4.string().regex(/\w+\/[-+\w]+/),
+//     });
 
-    const {name, contentType} = uploadBodySchema.parse(req.body);
+//     const {name, contentType} = uploadBodySchema.parse(req.body);
 
-    const fileKey = randomUUID().concat("-").concat(name);
+//     const fileKey = randomUUID().concat("-").concat(name);
 
-    const signedUrl = await getSignedUrl(
-        r2,
-        new PutObjectCommand({
-            Bucket: "lenon-bucket-teste",
-            Key: fileKey,
-            ContentType: contentType,
-        }),
-        {expiresIn: 600}
-    );
+//     const signedUrl = await getSignedUrl(
+//         r2,
+//         new PutObjectCommand({
+//             Bucket: "lenon-bucket-teste",
+//             Key: fileKey,
+//             ContentType: contentType,
+//         }),
+//         {expiresIn: 600}
+//     );
 
-    const file = await prisma.file.create({
-        data: {
-            name,
-            contentType,
-            key: fileKey,
-        },
-    });
+//     const file = await prisma.file.create({
+//         data: {
+//             name,
+//             contentType,
+//             key: fileKey,
+//         },
+//     });
 
-    return {signedUrl, fileId: file.id};
-});
+//     return {signedUrl, fileId: file.id};
+// });
+
+app.register(route_bucket);
 
 app.get("/uploads/:id", async (req) => {
     const getFileParamsSchema = z4.object({
